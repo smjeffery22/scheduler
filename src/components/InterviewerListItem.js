@@ -3,7 +3,7 @@ import classNames from "classnames";
 import "./InterviewerListItem.scss";
 
 function InterviewerListItem(props) {
-  const { id, name, avatar, selected, setInterviewer } = props;
+  const { name, avatar, selected, setInterviewer } = props;
   const interviewerClass = classNames(
     "interviewers__item",
     { "interviewers__item--selected": selected }
@@ -13,10 +13,7 @@ function InterviewerListItem(props) {
   const showInterviewerName = () => selected && name;
 
   return (
-    // this also works but Storybook for InterviewerListItem clickable would not work
-    //  since working with two different datasets
-    // <li className={interviewerClass} onClick={setInterviewer}>
-    <li className={interviewerClass} onClick={() => setInterviewer(id)}>
+    <li className={interviewerClass} onClick={setInterviewer}>
       <img
         className="interviewers__item-image"
         src={avatar}
