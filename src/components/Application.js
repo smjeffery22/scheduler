@@ -1,7 +1,7 @@
 import React from "react";
 
 import "components/Application.scss";
-import Button from "./Button";
+
 export default function Application(props) {
   return (
     <main className="layout">
@@ -18,7 +18,6 @@ export default function Application(props) {
           src="images/lhl.png"
           alt="Lighthouse Labs"
         />
-        <Button />
       </section>
       <section className="schedule">
         {/* Replace this with the schedule elements durint the "The Scheduler" activity. */}
