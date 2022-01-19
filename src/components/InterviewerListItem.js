@@ -13,6 +13,9 @@ function InterviewerListItem(props) {
   const showInterviewerName = () => selected && name;
 
   return (
+    // this also works but Storybook for InterviewerListItem clickable would not work
+    //  since working with two different datasets
+    // <li className={interviewerClass} onClick={setInterviewer}>
     <li className={interviewerClass} onClick={() => setInterviewer(id)}>
       <img
         className="interviewers__item-image"
