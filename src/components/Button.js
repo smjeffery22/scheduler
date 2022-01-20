@@ -6,7 +6,6 @@ export default function Button(props) {
    // props change for different buttons
    // props.children - anything between Button opening/closing tags in Storybook file for each button
    const { confirm, danger, onClick, disabled, children } = props;
-   console.log('button', onClick)
 
    let btnClass = classNames(
       "button",
