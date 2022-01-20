@@ -5,11 +5,14 @@ import "components/Button.scss";
 export default function Button(props) {
    // props change for different buttons
    // props.children - anything between Button opening/closing tags in Storybook file for each button
+   const { confirm, danger, onClick, disabled, children } = props;
+   console.log('button', onClick)
+
    let btnClass = classNames(
       "button",
       {
-         "button--confirm": props.confirm,
-         "button--danger": props.danger
+         "button--confirm": confirm,
+         "button--danger": danger
       }
    )
 
@@ -17,10 +20,10 @@ export default function Button(props) {
 
       <button
          className={btnClass}
-         onClick={props.onClick}
-         disabled={props.disabled}
+         onClick={onClick}
+         disabled={disabled}
       >
-         {props.children}
+         {children}
       </button>
    );
 }

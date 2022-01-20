@@ -14,12 +14,13 @@ import Appointment from "components/Appointment/index";
 import Header from "components/Appointment/Header";
 import Empty from "components/Appointment/Empty";
 import Show from "components/Appointment/Show";
+import Confirm from "components/Appointment/Confirm";
 
 storiesOf("Button", module)
   .addParameters({
     backgrounds: [{ name: "dark", value: "#222f3e", default: true }]
   })
-  .add("Base", () => <Button>Base Base</Button>)
+  .add("Base", () => <Button>Base</Button>)
   .add("Confirm", () => <Button confirm>Confirm</Button>)
   .add("Danger", () => <Button danger>Cancel</Button>)
   .add("Clickable", () => (
@@ -147,3 +148,4 @@ storiesOf("Appointment", module)
   .add("Header", () => <Header time="12pm" />)
   .add("Empty", () => <Empty onAdd={action("onAdd")} />)
   .add("Show", () => <Show student="Lydia Miller-Jones" interviewers={interviewers} onEdit={action("onEdit")} onDelete={action("onDelete")} />)
+  .add("Confirm", () => <Confirm message="Delete the appointment?" onConfirm={action("onConfirm")} onCancel={action("onCancel")} />)
