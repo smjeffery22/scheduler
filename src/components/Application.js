@@ -1,26 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import DayList from "./DayList";
 import "components/Appointment"
 import "components/Application.scss";
 import Appointment from "components/Appointment";
-
-const days = [
-  {
-    id: 1,
-    name: "Monday",
-    spots: 2,
-  },
-  {
-    id: 2,
-    name: "Tuesday",
-    spots: 5,
-  },
-  {
-    id: 3,
-    name: "Wednesday",
-    spots: 0,
-  },
-];
 
 const appointments = [
   {
@@ -32,7 +15,7 @@ const appointments = [
     time: "1pm",
     interview: {
       student: "Lydia Miller-Jones",
-      interviewer:{
+      interviewer: {
         id: 3,
         name: "Sylvia Palmer",
         avatar: "https://i.imgur.com/LpaY82x.png",
@@ -48,7 +31,7 @@ const appointments = [
     time: "3pm",
     interview: {
       student: "Archie Andrews",
-      interviewer:{
+      interviewer: {
         id: 4,
         name: "Cohana Roy",
         avatar: "https://i.imgur.com/FK8V841.jpg",
@@ -62,14 +45,21 @@ const appointments = [
 ];
 
 export default function Application(props) {
-  const [ day, setDay ] = useState("Monday");
+  const [day, setDay] = useState("Monday");
+  const [days,setDays] = useState([])
   const parsedAppointments = appointments.map((appointment) => {
     return <Appointment
       key={appointment.id}
       {...appointment}
     />
   })
-  
+
+  useEffect(() => {
+    axios.get("/api/days")
+      .then((res) => setDays(res.data))
+      .catch((err) => console.log(err.message));
+  }, []);
+
   return (
     <main className="layout">
       <section className="sidebar">
