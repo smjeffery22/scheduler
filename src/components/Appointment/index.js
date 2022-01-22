@@ -11,7 +11,7 @@ const SHOW = "SHOW";
 const CREATE = "CREATE";
 
 function Appointment(props) {
-  const { id, time, interview } = props;
+  const { id, time, interview, interviewers } = props;
   const { mode, transition, back } = useVisualMode(interview ? SHOW : EMPTY);
 
   return (
@@ -25,7 +25,7 @@ function Appointment(props) {
           interviewer={interview.interviewer}
         />
       )}
-      {mode === CREATE && <Form interviewers={[]} onCancel={() => back(EMPTY)} />}
+      {mode === CREATE && <Form interviewers={interviewers} onCancel={() => back(EMPTY)} />}
     </article>
   );
 }

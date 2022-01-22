@@ -3,12 +3,26 @@ const state = {
     {
       id: 1,
       name: "Monday",
-      appointments: [1, 2, 3]
+      appointments: [1, 2, 3],
+      interviewers: [
+        1,
+        3,
+        4,
+        6,
+        10
+      ]
     },
     {
       id: 2,
       name: "Tuesday",
-      appointments: [4, 5]
+      appointments: [4, 5],
+      interviewers: [
+        3,
+        4,
+        5,
+        6,
+        9
+      ]
     }
   ],
   appointments: {
@@ -44,7 +58,7 @@ function getAppointmentsForDay(state, day) {
   // days array & appointments object from state
   const daysArray = state.days;
   const appointmentsObject = state.appointments;
-  //  object from daysArray that matches the day parameter
+  // object from daysArray that matches the day parameter
   const filteredDay = daysArray.filter((eachDay) => eachDay.name === day)[0];
 
   // when days data is empty
@@ -62,6 +76,30 @@ function getAppointmentsForDay(state, day) {
   })
 
   return parsedAppointments;
+}
+
+function getInterviewersForDay(state, day) {
+  // days array & interviewers object from state
+  const daysArray = state.days;
+  const interviewersObject = state.interviewers;
+  // object from daysArray that matches the day parameter
+  const filteredDay = daysArray.filter((eachDay) => eachDay.name === day)[0];
+
+  // when days data is empty
+  if (daysArray.length === 0) return [];
+
+  // when no match is found
+  if (!filteredDay) return [];
+
+  // return all matched interviewers for the day
+  const parsedInterviewers = []
+  filteredDay.interviewers.forEach((interviewer) => {
+    const matchedInterviewer = interviewersObject[interviewer];
+
+    if (matchedInterviewer) parsedInterviewers.push(matchedInterviewer);
+  })
+
+  return parsedInterviewers;
 }
 
 function getInterview(state, interview) {
@@ -82,6 +120,7 @@ function getInterview(state, interview) {
 
 export {
   getAppointmentsForDay,
+  getInterviewersForDay,
   getInterview
 };
 
