@@ -40,7 +40,7 @@ const state = {
   }
 };
 
-export function getAppointmentsForDay(state, day) {
+function getAppointmentsForDay(state, day) {
   // days array & appointments object from state
   const daysArray = state.days;
   const appointmentsObject = state.appointments;
@@ -64,7 +64,7 @@ export function getAppointmentsForDay(state, day) {
   return parsedAppointments;
 }
 
-export function getInterview(state, interview) {
+function getInterview(state, interview) {
   // return an object containing the interview data
   // if interviewer: id from appointments matches with interviewer's id from interviewers object
 
@@ -80,7 +80,8 @@ export function getInterview(state, interview) {
   return interviewData;
 }
 
-// module.exports = {
-//   getAppointmentsForDay,
-//   getInterview
-// };
+export {
+  getAppointmentsForDay,
+  getInterview
+};
+
