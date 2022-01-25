@@ -55,6 +55,10 @@ export default function Application(props) {
     );
   };
 
+  const editInterview = () => {
+
+  };  
+
   const dailyAppointments = getAppointmentsForDay(state, state.day);
   const dailyInterviewers = getInterviewersForDay(state, state.day);
   // const dailyInterviewers = getInterviewersForDay(state, state.day);
@@ -70,6 +74,7 @@ export default function Application(props) {
       interviewers={dailyInterviewers}
       bookInterview={bookInterview}
       cancelInterview={cancelInterview}
+      editInterview={editInterview}
     />
   });
 
