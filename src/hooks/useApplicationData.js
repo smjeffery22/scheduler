@@ -23,6 +23,23 @@ function useApplicationData() {
       .catch((err) => console.log(err.message));
   }, []);
 
+  const updateSpots = (appointments) => {
+    const currentDay = state.day;
+    const daysArray = [...state.days];
+    const currentDayIndex = daysArray.findIndex((day) => day.name === currentDay);
+    const currentDayObject = daysArray[currentDayIndex];
+    const currentDayAppointments = currentDayObject.appointments
+    let spotCounter = 0;
+
+    for (const currentDayAppointment of currentDayAppointments) {
+      // check with the updated appointments data
+      if (appointments[currentDayAppointment].interview === null) spotCounter++;
+    }
+
+    daysArray[currentDayIndex].spots = spotCounter;
+
+    return daysArray;
+  };
 
   const bookInterview = (id, interview) => {
     // create a new object to copy specific (id) appointment and add/replace interview data
@@ -38,10 +55,11 @@ function useApplicationData() {
       [id]: appointment
     };
 
-    // 
     return (
       axios.put(`/api/appointments/${id}`, appointment)
-        .then((res) => setState((prev) => ({ ...prev, appointments })))
+        .then((res) => {
+          setState((prev) => ({ ...prev, appointments, days: updateSpots(appointments) }));
+        })
     );
   };
 
@@ -58,8 +76,10 @@ function useApplicationData() {
 
     return (
       axios.delete(`/api/appointments/${id}`)
-        .then((res) => setState((prev) => ({ ...prev, appointments })))
-    );
+        .then((res) => {
+          setState((prev) => ({ ...prev, appointments, days: updateSpots(appointments) }))
+        })
+    )
   };
 
   return {
