@@ -23,23 +23,16 @@ function useApplicationData() {
       .catch((err) => console.log(err.message));
   }, []);
 
-  // function updateSpots(id) {
-  //   axios.get('/api/days')
-  //     .then((response) => {
-  //       setState((prev) => ({ ...prev, days: response.data }))
-  //     })
-  // }
-
   const updateSpots = (appointments) => {
     const currentDay = state.day;
     const daysArray = [...state.days];
-    // const currentDayObject = daysArray.filter((day) => day.name === currentDay);
     const currentDayIndex = daysArray.findIndex((day) => day.name === currentDay);
     const currentDayObject = daysArray[currentDayIndex];
     const currentDayAppointments = currentDayObject.appointments
     let spotCounter = 0;
 
     for (const currentDayAppointment of currentDayAppointments) {
+      // check with the updated appointments data
       if (appointments[currentDayAppointment].interview === null) spotCounter++;
     }
 
@@ -85,25 +78,9 @@ function useApplicationData() {
       axios.delete(`/api/appointments/${id}`)
         .then((res) => {
           setState((prev) => ({ ...prev, appointments, days: updateSpots(appointments) }))
-          // updateSpots(id)
         })
     )
   };
-
-  // const updateSpots = () => {
-  //   const currentDay = state.day;
-  //   const currentDayObject = state.days.filter((day) => day.name === currentDay);
-  //   const currentDayAppointments = currentDayObject[0].appointments
-  //   let spotCounter = 0;
-
-  //   for (const currentDayAppointment of currentDayAppointments) {
-  //     if (state.appointments[currentDayAppointment].interview === null) spotCounter++;
-  //   }
-  //   console.log(spotCounter)
-
-  //   const currentSpots = currentDayObject[0].spots;
-  // };
-  // updateSpots();
 
   return {
     state,
