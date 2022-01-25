@@ -16,18 +16,40 @@ export default function Application(props) {
   const setDay = day => setState({ ...state, day });
 
   const bookInterview = (id, interview) => {
+    // create a new object to copy specific (id) appointment and add/replace interview data
+    // interview data passed from Appointment component
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
     };
 
+    // create a new object to copy all the appointments and add/replace appointment data
     const appointments = {
       ...state.appointments,
       [id]: appointment
     };
 
+    // 
     return (
       axios.put(`/api/appointments/${id}`, appointment)
+        .then((res) => setState((prev) => ({ ...prev, appointments })))
+        .catch((err) => console.log(err.message))
+    );
+  };
+
+  const cancelInterview = (id, interview) => {
+    const appointment = {
+      ...state.appointments[id],
+      interview
+    };
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    }
+    
+    return (
+      axios.delete(`/api/appointments/${id}`)
         .then((res) => setState((prev) => ({ ...prev, appointments })))
         .catch((err) => console.log(err.message))
     );
@@ -47,6 +69,7 @@ export default function Application(props) {
       interview={interview}
       interviewers={dailyInterviewers}
       bookInterview={bookInterview}
+      cancelInterview={cancelInterview}
     />
   });
 
