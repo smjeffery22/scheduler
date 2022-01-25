@@ -5,6 +5,7 @@ import Empty from "./Empty";
 import Form from "./Form";
 import Status from "./Status";
 import Confirm from "./Confirm";
+import Error from "./Error";
 import useVisualMode from "hooks/useVisualMode";
 import "./styles.scss";
 
@@ -15,6 +16,8 @@ const SAVING = "SAVING";
 const CONFIRM = "CONFIRM";
 const DELETING = "DELETING";
 const EDIT = "EDIT";
+const ERROR_SAVE = "ERROR_SAVE";
+const ERROR_DELETE = "ERROR_DELETE";
 
 function Appointment(props) {
   const { id, time, interview, interviewers, bookInterview, cancelInterview } = props;
@@ -30,17 +33,17 @@ function Appointment(props) {
     transition(SAVING);
 
     bookInterview(id, interview)
-      .then(() => transition(SHOW));
+      .then(() => transition(SHOW))
+      .catch(() => transition(ERROR_SAVE));
   };
 
   // delete interview when confirmed
   const deleteInterview = () => {
-    const interview = null;
-
     transition(DELETING);
 
-    cancelInterview(id, interview)
+    cancelInterview(id)
       .then(() => transition(EMPTY))
+      .catch(() => transition(ERROR_DELETE));
   };
 
   return (
@@ -56,11 +59,14 @@ function Appointment(props) {
           onEdit={() => transition(EDIT)}
         />
       )}
-      {mode === CREATE && <Form interviewers={interviewers} onCancel={() => back(EMPTY)} onSave={save} />}
+      {mode === CREATE && <Form interviewers={interviewers} onCancel={back} onSave={save} />}
       {mode === SAVING && <Status message="Saving" />}
       {mode === DELETING && <Status message="Deleting" />}
       {mode === CONFIRM && <Confirm message="Delete the appointment?" onConfirm={deleteInterview} onCancel={back} />}
       {mode === EDIT && <Form studentName={interview.student} interviewerId={interview.interviewer.id} interviewers={interviewers} onSave={save} onCancel={back} />}
+
+      {mode === ERROR_SAVE && <Error message="Could not save appointment" onClose={() => transition(EMPTY)}/>}
+      {mode === ERROR_DELETE && <Error message="Could not delete appointment" onClose={() => transition(SHOW)}/>}
     </article>
   );
 }
