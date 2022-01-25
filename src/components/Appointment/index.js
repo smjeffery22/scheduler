@@ -17,7 +17,7 @@ const DELETING = "DELETING";
 const EDIT = "EDIT";
 
 function Appointment(props) {
-  const { id, time, interview, interviewers, bookInterview, cancelInterview, editInterview } = props;
+  const { id, time, interview, interviewers, bookInterview, cancelInterview } = props;
   const { mode, transition, back } = useVisualMode(interview ? SHOW : EMPTY);
 
   // save interview when save button from the form is clicked
