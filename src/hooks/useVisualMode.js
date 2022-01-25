@@ -6,32 +6,23 @@ function useVisualMode(initial) {
 
   function transition(newMode, replace = false) {
     setMode(newMode);
-    setHistory(prev => [...prev, newMode]);
-    // console.log(history) //[FIRST, SECOND] because history state hasn't been updated yet - it is put aside at this point and will be updated at the end
-    if (replace) {
-      const newHistory = [...history]; // [FIRST, SECOND]
-      
-      // pop() returns a value, not an array
-      // newHistory.pop().push(newMode);
-      newHistory.pop() // [FIRST]
-      
-      newHistory.push(newMode); // [FIRST, THIRD]
 
-      setHistory(newHistory)
+    if (replace) {
+      setHistory(prev => [...prev.slice(0, prev.length - 1), newMode]);
+    } else {
+      setHistory(prev => [...prev, newMode]);
     }
   }
 
   function back() {
     if (history.length > 1) {
-      const newHistory = [...history]
-      
-      newHistory.pop();
+      const newHistory = history.slice(0, history.length - 1);
 
-      setMode(newHistory[newHistory.length - 1]);
-      setHistory(newHistory);
+      setMode(history[newHistory.length - 1]);
+      setHistory(prev => [...prev.slice(0, prev.length - 1)]);
     }
   }
-
+  console.log(history)
   return {
     mode,
     transition,

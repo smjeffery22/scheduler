@@ -34,16 +34,16 @@ function Appointment(props) {
 
     bookInterview(id, interview)
       .then(() => transition(SHOW))
-      .catch(() => transition(ERROR_SAVE));
+      .catch(() => transition(ERROR_SAVE, true));
   };
 
   // delete interview when confirmed
   const deleteInterview = () => {
-    transition(DELETING);
+    transition(DELETING, true);
 
     cancelInterview(id)
       .then(() => transition(EMPTY))
-      .catch(() => transition(ERROR_DELETE));
+      .catch(() => transition(ERROR_DELETE, true));
   };
 
   return (
@@ -65,8 +65,8 @@ function Appointment(props) {
       {mode === CONFIRM && <Confirm message="Delete the appointment?" onConfirm={deleteInterview} onCancel={back} />}
       {mode === EDIT && <Form studentName={interview.student} interviewerId={interview.interviewer.id} interviewers={interviewers} onSave={save} onCancel={back} />}
 
-      {mode === ERROR_SAVE && <Error message="Could not save appointment" onClose={() => transition(EMPTY)}/>}
-      {mode === ERROR_DELETE && <Error message="Could not delete appointment" onClose={() => transition(SHOW)}/>}
+      {mode === ERROR_SAVE && <Error message="Could not save appointment" onClose={back}/>}
+      {mode === ERROR_DELETE && <Error message="Could not delete appointment" onClose={back}/>}
     </article>
   );
 }
