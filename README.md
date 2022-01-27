@@ -22,7 +22,7 @@ npm test
 npm run storybook
 ```
 
-## Features
+## Demo
 
-<img src="./docs/scheduler_create.gif" alt="apptCreate">
+![Scheduler Create Appointment Demo](docs/scheduler_create.gif)
 
