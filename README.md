@@ -1,5 +1,9 @@
 # Interview Scheduler
 
+Interview scheduler allows users to choose a day, time and an interviewer, and book an appointment. Appointments can also be edited and updated or cancelled.
+
+Please see the instructions and demo below. ***Enjoy!***
+
 ## Setup
 
 Install dependencies with `npm install`.
