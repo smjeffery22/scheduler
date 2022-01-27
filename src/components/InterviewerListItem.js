@@ -17,7 +17,7 @@ function InterviewerListItem(props) {
       <img
         className="interviewers__item-image"
         src={avatar}
-        alt="Sylvia Palmer"
+        alt={name}
       />
       {showInterviewerName()}
     </li>
