@@ -4,7 +4,7 @@ import InterviewerListItem from "./InterviewerListItem";
 import "./InterviewerList.scss";
 
 function InterviewerList(props) {
-  const { interviewers, value, onChange } = props
+  const { interviewers, value, onChange } = props;
 
   const parsedInterviewerListItems = interviewers.map((singleInterviewer) => {
     return <InterviewerListItem
@@ -14,8 +14,7 @@ function InterviewerList(props) {
       selected={singleInterviewer.id === value}
       setInterviewer={() => onChange(singleInterviewer.id)}
     />
-  })
-
+  });
 
   return (
     <section className="interviewers">
@@ -28,6 +27,7 @@ function InterviewerList(props) {
 }
 
 InterviewerList.propTypes = {
-  interviewers: PropTypes.array.isRequired}
+  interviewers: PropTypes.array.isRequired
+}
 
 export default InterviewerList;

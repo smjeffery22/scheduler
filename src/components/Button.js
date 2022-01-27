@@ -2,9 +2,7 @@ import React from "react";
 import classNames from "classnames"
 import "components/Button.scss";
 
-export default function Button(props) {
-   // props change for different buttons
-   // props.children - anything between Button opening/closing tags in Storybook file for each button
+function Button(props) {
    const { confirm, danger, onClick, disabled, children } = props;
 
    let btnClass = classNames(
@@ -13,10 +11,9 @@ export default function Button(props) {
          "button--confirm": confirm,
          "button--danger": danger
       }
-   )
+   );
 
    return (
-
       <button
          className={btnClass}
          onClick={onClick}
@@ -26,3 +23,5 @@ export default function Button(props) {
       </button>
    );
 }
+
+export default Button;

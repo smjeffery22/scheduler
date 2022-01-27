@@ -24,9 +24,8 @@ function useApplicationData() {
   }, []);
 
   const updateSpots = (appointments) => {
-    const currentDay = state.day;
     const daysArray = [...state.days];
-    const currentDayIndex = daysArray.findIndex((day) => day.name === currentDay);
+    const currentDayIndex = daysArray.findIndex((day) => day.name === state.day);
     const currentDayObject = daysArray[currentDayIndex];
     const currentDayAppointments = currentDayObject.appointments
     let spotCounter = 0;
@@ -49,7 +48,7 @@ function useApplicationData() {
       interview: { ...interview }
     };
 
-    // create a new object to copy all the appointments and add/replace appointment data
+    // create a new object to copy all the appointments and add/replace (id) appointment data
     const appointments = {
       ...state.appointments,
       [id]: appointment
@@ -57,7 +56,7 @@ function useApplicationData() {
 
     return (
       axios.put(`/api/appointments/${id}`, appointment)
-        .then((res) => {
+        .then(() => {
           setState((prev) => ({ ...prev, appointments, days: updateSpots(appointments) }));
         })
     );
@@ -72,11 +71,11 @@ function useApplicationData() {
     const appointments = {
       ...state.appointments,
       [id]: appointment
-    }
+    };
 
     return (
       axios.delete(`/api/appointments/${id}`)
-        .then((res) => {
+        .then(() => {
           setState((prev) => ({ ...prev, appointments, days: updateSpots(appointments) }))
         })
     )
