@@ -21,3 +21,8 @@ npm test
 ```sh
 npm run storybook
 ```
+
+## Features
+
+<img src="./docs/scheduler_create.gif" alt="apptCreate">
+
