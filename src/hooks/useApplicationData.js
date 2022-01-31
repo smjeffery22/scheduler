@@ -23,6 +23,23 @@ function useApplicationData() {
       .catch((err) => console.log(err.message));
   }, []);
 
+  useEffect(() => {
+    const webSocket = new WebSocket('ws://localhost:8001')
+
+    console.log(webSocket.readyState);
+
+    webSocket.onopen = (e) => {
+      webSocket.send("ping");
+
+      console.log(webSocket.readyState);
+    }
+
+    webSocket.onmessage = (e) => {
+      const msg = JSON.parse(e.data)
+      console.log("Message received:", msg)
+    }
+  }, [])
+
   const updateSpots = (appointments) => {
     const daysArray = [...state.days];
     const currentDayIndex = daysArray.findIndex((day) => day.name === state.day);
