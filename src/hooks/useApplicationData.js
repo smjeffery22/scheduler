@@ -1,48 +1,99 @@
 import { useEffect, useReducer } from "react";
 import axios from "axios";
 
-const SET_DAY = "SET_DAY";
-const SET_APPLICATION_DATA = "SET_APPLCATION_DATA";
-const SET_INTERVIEW = "SET_INTERVIEW";
 
-function reducer(state, action) {
-  switch (action.type) {
-    case SET_DAY: {
-      return { ...state, day: action.day };
-    }
-
-    case SET_APPLICATION_DATA: {
-      return {
-        ...state,
-        days: action.days,
-        appointments: action.appointments,
-        interviewers: action.interviewers
-      };
-    }
-
-    case SET_INTERVIEW: {
-      return {
-        ...state,
-        appointments: action.appointments,
-        days: action.days
-      }
-    }
-
-    default: {
-      throw new Error(`Tried to reduce with unsupported action type: ${action.type}`);
-    }
-  }
-}
 
 function useApplicationData() {
-  const [state, dispatch] = useReducer(reducer, {
+  const initialState = {
     day: "Monday",
     days: [],
     appointments: {},
     interviewers: {}
-  });
+  };
 
-  const setDay = day => dispatch({ type: SET_DAY, day })
+  const SET_DAY = "SET_DAY";
+  const SET_APPLICATION_DATA = "SET_APPLCATION_DATA";
+  const SET_INTERVIEW = "SET_INTERVIEW";
+
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+
+  function reducer(state, action) {
+    switch (action.type) {
+      case SET_DAY: {
+        return { ...state, day: action.value };
+      }
+
+      case SET_APPLICATION_DATA: {
+        return {
+          ...state,
+          days: action.value.days,
+          appointments: action.value.appointments,
+          interviewers: action.value.interviewers
+        };
+      }
+
+      case SET_INTERVIEW: {
+        return {
+          ...state,
+          appointments: action.value.appointments,
+          days: action.value.days
+        }
+      }
+
+      default: {
+        throw new Error(`Tried to reduce with unsupported action type: ${action.type}`);
+      }
+    }
+  }
+
+  const setDay = day => dispatch({ type: SET_DAY, value: day })
+
+  useEffect(() => {
+    const webSocket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL)
+
+    console.log(webSocket.readyState);
+
+    webSocket.onopen = (e) => {
+      webSocket.send("ping");
+
+      console.log(webSocket.readyState);
+    }
+
+    webSocket.onmessage = (e) => {
+      const { type, id, interview } = JSON.parse(e.data)
+
+      if (type === SET_INTERVIEW) {
+        const appointment = {
+          ...state.appointments[id],
+          interview: interview ? { ...interview } : null
+        };
+
+        const appointments = {
+          ...state.appointments,
+          [id]: appointment
+        };
+
+        const days = updateSpots(appointments);
+
+        dispatch({
+          type: type,
+          value: {
+            appointments: appointments,
+            days: days
+          }
+        });
+      }
+
+      console.log("Message received:", e.data)
+    }
+
+    return () => {
+      if (webSocket.readyState) {
+        webSocket.close();
+      }
+    };
+  })
 
   useEffect(() => {
     Promise.all([
@@ -53,9 +104,11 @@ function useApplicationData() {
       .then((all) => {
         dispatch({
           type: SET_APPLICATION_DATA,
-          days: all[0].data,
-          appointments: all[1].data,
-          interviewers: all[2].data
+          value: {
+            days: all[0].data,
+            appointments: all[1].data,
+            interviewers: all[2].data
+          }
         })
       })
       .catch((err) => console.log(err.message));
@@ -97,8 +150,10 @@ function useApplicationData() {
         .then(() => {
           dispatch({
             type: SET_INTERVIEW,
-            appointments,
-            days: updateSpots(appointments)
+            value: {
+              appointments,
+              days: updateSpots(appointments)
+            }
           })
         })
     );
@@ -120,8 +175,10 @@ function useApplicationData() {
         .then(() => {
           dispatch({
             type: SET_INTERVIEW,
-            appointments,
-            days: updateSpots(appointments)
+            value: {
+              appointments,
+              days: updateSpots(appointments)
+            }
           })
         })
     )
