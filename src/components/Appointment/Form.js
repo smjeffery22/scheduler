@@ -28,10 +28,10 @@ function Form(props) {
       return;
     }
 
-    // if (!interviewer) {
-    //   setError("Interviewer must be selected");
-    //   return;
-    // }
+    if (!interviewer) {
+      setError("Interviewer must be selected");
+      return;
+    }
 
     setError("");
     onSave(student, interviewer);
