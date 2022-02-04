@@ -1,6 +1,7 @@
 import React from "react";
 import { render, cleanup, fireEvent } from "@testing-library/react";
 import Form from "components/Appointment/Form";
+require('dotenv').config();
 
 afterEach(cleanup);
 
@@ -42,19 +43,21 @@ describe("Form", () => {
 
     const { getByText, queryByText } = render(
       <Form
+        interviewerId={1}
         interviewers={interviewers}
         studentName="Jeffery Park"
         onSave={onSave}
       />)
 
     const saveButton = getByText("Save");
+
     fireEvent.click(saveButton)
 
     expect(queryByText(/student name cannot be blank/i)).toBeNull();
 
     expect(onSave).toHaveBeenCalledTimes(1);
 
-    expect(onSave).toHaveBeenCalledWith("Jeffery Park", null);
+    expect(onSave).toHaveBeenCalledWith("Jeffery Park", 1);
   });
 
   it("submits the name entered by the user", () => {
