@@ -8,23 +8,23 @@ const SET_INTERVIEW = "SET_INTERVIEW";
 function reducer(state, action) {
   switch (action.type) {
     case SET_DAY: {
-      return { ...state, day: action.day };
+      return { ...state, day: action.value };
     }
 
     case SET_APPLICATION_DATA: {
       return {
         ...state,
-        days: action.days,
-        appointments: action.appointments,
-        interviewers: action.interviewers
+        days: action.value.days,
+        appointments: action.value.appointments,
+        interviewers: action.value.interviewers
       };
     }
 
     case SET_INTERVIEW: {
       return {
         ...state,
-        appointments: action.appointments,
-        days: action.days
+        appointments: action.value.appointments,
+        days: action.value.days
       }
     }
 
@@ -42,7 +42,7 @@ function useApplicationData() {
     interviewers: {}
   });
 
-  const setDay = day => dispatch({ type: SET_DAY, day })
+  const setDay = day => dispatch({ type: SET_DAY, value: day })
 
   useEffect(() => {
     Promise.all([
@@ -53,9 +53,11 @@ function useApplicationData() {
       .then((all) => {
         dispatch({
           type: SET_APPLICATION_DATA,
-          days: all[0].data,
-          appointments: all[1].data,
-          interviewers: all[2].data
+          value: {
+            days: all[0].data,
+            appointments: all[1].data,
+            interviewers: all[2].data
+          }
         })
       })
       .catch((err) => console.log(err.message));
@@ -74,6 +76,7 @@ function useApplicationData() {
 
     webSocket.onmessage = (e) => {
       const msg = JSON.parse(e.data)
+      // dispatch({ type: SET_INTERVIEW, msg.interview })
       console.log("Message received:", msg)
     }
   }, [])
@@ -114,8 +117,10 @@ function useApplicationData() {
         .then(() => {
           dispatch({
             type: SET_INTERVIEW,
-            appointments,
-            days: updateSpots(appointments)
+            value: {
+              appointments,
+              days: updateSpots(appointments)
+            }
           })
         })
     );
@@ -137,8 +142,10 @@ function useApplicationData() {
         .then(() => {
           dispatch({
             type: SET_INTERVIEW,
-            appointments,
-            days: updateSpots(appointments)
+            value: {
+              appointments,
+              days: updateSpots(appointments)
+            }
           })
         })
     )
